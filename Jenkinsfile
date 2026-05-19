@@ -22,7 +22,7 @@ pipeline {
     environment {
         FORCE_COLOR = 0
         NO_COLOR = true  
-        //TEST_MODE = "e2e"      
+        TEST_MODE = "e2e"      
     }    
  
     //Etapas del pipeline
@@ -77,6 +77,20 @@ pipeline {
             }
         }
 
+        //ejercicio  6 parte opcional
+        stage('E2E test'){
+            steps{
+                sh 'docker compose -f compose.e2e.yml run tests'
+            }
+
+            post  {
+                //al final, siempre, limpio el servicio
+                always{
+                    sh 'docker compose -f compose.e2e.yml down -v --remove-orphans || true'
+                }  
+            }
+        }
+
         //8. Ejecución de test
         stage("Test") {
             steps {
@@ -102,19 +116,6 @@ pipeline {
             }
         }
 
-        //ejercicio  6 parte opcional
-        stage('E2E test'){
-            steps{
-                sh 'docker compose -f compose.e2e.yml run tests'
-            }
-
-            post  {
-                //al final, siempre, limpio el servicio
-                always{
-                    sh 'docker compose -f compose.e2e.yml down -v --remove-orphans || true'
-                }  
-            }
-        }
     }
 
     //10. definición de etapas finales
