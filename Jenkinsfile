@@ -15,7 +15,8 @@ pipeline {
 
     }
  
-
+ 
+    //Etapas del pipeline
     stages {
         stage("prueba") {
             steps {
