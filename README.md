@@ -13,6 +13,6 @@ Una vez lo creo, busca en el repositorio, localizando el fichero Jenkinsfile y p
 ## Parte Obligatoria ##  
 1. Opciones de Job
 Añado al fichero Jenkinsfile es siguiente código:
-```
+
 
   
