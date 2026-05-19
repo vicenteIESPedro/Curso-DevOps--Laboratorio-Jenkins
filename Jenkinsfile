@@ -13,6 +13,9 @@ pipeline {
         //fijo el tiempo máximo de ejecución del Job en 5 minutos
         timeout(time: 5, unit: 'MINUTES')
 
+        //mantener las diez ultimas ejecuciones del historial
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+
     }
  
     // 2. definición de variables de entorno FORCE_COLOR y NO_COLOR
