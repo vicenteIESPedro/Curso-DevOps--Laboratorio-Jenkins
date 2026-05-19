@@ -33,35 +33,48 @@ pipeline {
             }
         }
 
-        //instalación de dependencias del proyecto
+        //4. instalación de dependencias del proyecto
         stage("Install dependencies") {
             steps {
                 sh 'npm install'
             }
         }
 
-        //5. Verificación del formato  del codigo definido
-        stage("Format check") {
-            steps {
-                sh 'npm run format:check'
+        //definición de dos etapas que se ejecutan en paralelo
+        stage("Liting"){
+            parallel {
+                //5. Verificación del formato  del codigo definido
+                stage("Format check") {
+                    steps {
+                        sh 'npm run format:check'
+                    }
+                }
+
+                //6. Verificación del formato  del codigo definido
+                stage("Format check") {
+                    steps {
+                        sh 'npm run format:check'
+                    }
+                }
             }
         }
+        
 
-        //6. Comprobación de la cálidad del código
+        //7. Comprobación de la cálidad del código
         stage("Code quality") {
             steps {
                 sh 'npm run lint'
             }
         }
 
-        //7. Comprobación de tipos
+        //8. Comprobación de tipos
         stage("Type check") {
             steps {
                 sh 'npm run type-check'
             }
         }
 
-        //8. Ejecución de test
+        //9. Ejecución de test
         stage("Test") {
             steps {
                 sh 'npm run test:coverage'
@@ -74,7 +87,7 @@ pipeline {
             }
         }
 
-        //9. Construcción del proyecto y archivado de un artifact
+        //10. Construcción del proyecto y archivado de un artifact
         stage("Build and Archive") {
             steps {
                 //build del proyecto
@@ -87,7 +100,7 @@ pipeline {
         }
     }
 
-    //10. definición de etapas finales
+    //11. definición de etapas finales
     post{
 
         //siempre se ejecuta
