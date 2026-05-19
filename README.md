@@ -132,6 +132,51 @@ Como podemos ver, ya ha finalizado la ejecución, con todos los pasos correctos.
 Sólo nos queda comprobar que el artifact se ha creado. Para ello, volvemos a la página de la rama. Puede tambien comprobarse en la build.  
 <img width="661" height="495" alt="06 - Artifact" src="https://github.com/user-attachments/assets/43762444-a902-40d2-ae2d-ebc2abaf1a41" />  
 
+## PARTE VOLUNTARIA ##  
+  
+1. Ejecución de test con cobertura.  
+El primer paso es instalar el plugin HTML Publisher Plugin.
+Nos vamos a configurar/Plugginsn seleccionamos available plugins, lo buscamos y pulsamos el botón install.
+Tras la instalación reiniciamos Jenkins.
+<img width="1322" height="268" alt="07 - Instalar plugin" src="https://github.com/user-attachments/assets/882244ce-495f-4b86-a10f-21d22665aa2a" />
+
+Podemos comprobar cual es la sintaxis de este pluggin mediante la ayuda que encontraremos en  Jenkins/trabajo/pipeline syntax/steps reference.  
+<img width="792" height="317" alt="08 - ayuda" src="https://github.com/user-attachments/assets/12a7f859-0da2-4cb8-a0c8-444232660f33" />  
+Y buscando publishHTML.  
+<img width="649" height="508" alt="09 - ayuda publishHTML" src="https://github.com/user-attachments/assets/8f792b27-646b-45a0-8d02-c70f582fc75c" />  
+
+Una vez tenemos la información modificamos la etapa Test del jenkisfile, por el siguiente código:  
+```
+        //8. Ejecución de test
+        stage("Test") {
+            steps {
+                sh 'npm run test:coverage'
+                publishHTML(reportName: "coverage report",
+                            reportDir: "coverage",
+                            reportFiles: "index.html",
+                            keepAll: true,
+                            alwaysLinkToLastBuild: true,
+                            allowMissing: true)
+            }
+        }
+```
+Podemos ejecutarlo  
+<img width="1304" height="661" alt="10 - ejecutar test" src="https://github.com/user-attachments/assets/a2733611-61d9-402a-be64-94e18b936514" />  
+
+En la página de la rama nos aparece una nueva linea (coverage report) correspondiente a la operación de publicar que hemos realizado en la etapa test.  
+<img width="591" height="292" alt="11 - menu" src="https://github.com/user-attachments/assets/30a45c1d-de6d-422f-875f-cc6b73d75daa" />  
+
+Al pulsar sobre ella, podemos ver el informe:  
+<img width="1257" height="373" alt="12 - html" src="https://github.com/user-attachments/assets/e46a2b66-7cb5-42df-9297-ae25db257cc0" />  
+
+
+  
+
+
+
+
+
+
   
 
 
