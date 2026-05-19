@@ -1,7 +1,7 @@
 pipeline {
     agent any
 
-    //definición de opciones para el Job
+    //1. definición de opciones para el Job
     options {
         //deshabilito las ejecuciones concurrentes
         disableConcurrentBuilds()
@@ -15,17 +15,86 @@ pipeline {
 
     }
  
+    // 2. definición de variables de entorno FORCE_COLOR y NO_COLOR
     environment {
-        FORCECOLOR = 0
+        FORCE_COLOR = 0
         NO_COLOR = true        
     }    
  
     //Etapas del pipeline
     stages {
-        stage("prueba") {
+        //3. etapa comprobación herramienta
+        stage("Audit tools") {
             steps {
-                echo "funciona"
+                sh 'node --version'
             }
+        }
+
+        //instalación de dependencias del proyecto
+        stage("Install dependencies") {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        //5. Verificación del formato  del codigo definido
+        stage("Format check") {
+            steps {
+                sh 'npm run format:check'
+            }
+        }
+
+        //6. Comprobación de la cálidad del código
+        stage("Code quality") {
+            steps {
+                sh 'npm run lint'
+            }
+        }
+
+        //7. Comprobación de tipos
+        stage("Type check") {
+            steps {
+                sh 'npm run type-check'
+            }
+        }
+
+        //8. Ejecución de test
+        stage("Test") {
+            steps {
+                sh 'npm run test'
+            }
+        }
+
+        //9. Construcción del proyecto y archivado de un artifact
+        stage("Build and Archive") {
+            steps {
+                //build del proyecto
+                sh 'npm run build'
+                //creación del archivo zip
+                sh 'zip -r dist.zip dist'
+                //Almacenamiento del archivo creado como artifact
+                archiveArtifacts(artifacts: 'dist.zip', fingerprint: true)
+            }
+        }
+    }
+
+    //10. definición de etapas finales
+    post{
+
+        //siempre se ejecuta
+        always{
+            //limpieza del espacio de trabajo
+            cleanWs()
+        }
+
+        //si se ha ejecutado correctamente
+        success{
+            echo 'Pipeline completed successfully!!!'
+        }
+
+        // si se han producido errores
+        failure{
+            echo 'Pipeline failed. Review logs'
         }
     }
  
