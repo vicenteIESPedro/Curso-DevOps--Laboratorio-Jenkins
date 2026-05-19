@@ -1,6 +1,6 @@
-* Laboratorio Jenkins: Automatización CI/CD con jenkinsfile *
+# Laboratorio Jenkins: Automatización CI/CD con jenkinsfile #
 
-1. Creación de Tarea en Jenkins y enlace a Repositorio
+1. Creación de Tarea en Jenkins y enlace a Repositorio  
 Lo primero ha sido crear el token en GitHub que usaré para conectar con Jenkins.  
 <img width="1169" height="262" alt="01 - Token Github" src="https://github.com/user-attachments/assets/ae64be54-5712-4fe6-b3d7-4e75ad16d180" />
   
