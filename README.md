@@ -135,11 +135,11 @@ Sólo nos queda comprobar que el artifact se ha creado. Para ello, volvemos a la
 ## PARTE VOLUNTARIA ##  
   
 1. Ejecución de test con cobertura.  
-El primer paso es instalar el plugin HTML Publisher Plugin.
-Nos vamos a configurar/Plugginsn seleccionamos available plugins, lo buscamos y pulsamos el botón install.
-Tras la instalación reiniciamos Jenkins.
+El primer paso es instalar el plugin HTML Publisher Plugin.  
+Nos vamos a configurar/Pluggins y seleccionamos available plugins. Lo buscamos y pulsamos el botón install.  
 <img width="1322" height="268" alt="07 - Instalar plugin" src="https://github.com/user-attachments/assets/882244ce-495f-4b86-a10f-21d22665aa2a" />
-
+Tras la instalación reiniciamos Jenkins.  
+  
 Podemos comprobar cual es la sintaxis de este pluggin mediante la ayuda que encontraremos en  Jenkins/trabajo/pipeline syntax/steps reference.  
 <img width="792" height="317" alt="08 - ayuda" src="https://github.com/user-attachments/assets/12a7f859-0da2-4cb8-a0c8-444232660f33" />  
 Y buscando publishHTML.  
@@ -163,12 +163,34 @@ Una vez tenemos la información modificamos la etapa Test del jenkisfile, por el
 Podemos ejecutarlo  
 <img width="1304" height="661" alt="10 - ejecutar test" src="https://github.com/user-attachments/assets/a2733611-61d9-402a-be64-94e18b936514" />  
 
-En la página de la rama nos aparece una nueva linea (coverage report) correspondiente a la operación de publicar que hemos realizado en la etapa test.  
+Como resultado, en la página de la rama nos aparece una nueva linea (coverage report) correspondiente a la operación de publicar que hemos realizado en la etapa test.  
 <img width="591" height="292" alt="11 - menu" src="https://github.com/user-attachments/assets/30a45c1d-de6d-422f-875f-cc6b73d75daa" />  
 
 Al pulsar sobre ella, podemos ver el informe:  
 <img width="1257" height="373" alt="12 - html" src="https://github.com/user-attachments/assets/e46a2b66-7cb5-42df-9297-ae25db257cc0" />  
+  
 
+2. Opciones extra del Job.  
+Nos piden mantener en el historial las últimas 10 ejecuciones. Esto se realiza mediante la opción buildDiscarder.  
+Modificamos el fichero jenkinsfile añadiendo esta opción.
+```
+    //1. definición de opciones para el Job
+    options {
+        //deshabilito las ejecuciones concurrentes
+        disableConcurrentBuilds()
+        
+        //establezco que aparezca impresa fecha/hora en las lineas
+        //ejecutadas
+        timestamps();
+
+        //fijo el tiempo máximo de ejecución del Job en 5 minutos
+        timeout(time: 5, unit: 'MINUTES')
+
+        //mantener las diez ultimas ejecuciones del historial
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+    }
+```
+ 
 
   
 
