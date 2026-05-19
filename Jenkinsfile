@@ -61,7 +61,13 @@ pipeline {
         //8. Ejecución de test
         stage("Test") {
             steps {
-                sh 'npm run test'
+                sh 'npm run test:coverage'
+                publishHTML(reportName: "coverage report",
+                            reportDir: "coverage",
+                            reportFiles: "index.html",
+                            reportAll: true,
+                            alwaysLinkToLastBuild: true,
+                            allowMissing: true)
             }
         }
 
