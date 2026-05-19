@@ -11,7 +11,7 @@ Una vez lo creo, busca en el repositorio, localizando el fichero Jenkinsfile y p
 <img width="1453" height="376" alt="03 - Rama main" src="https://github.com/user-attachments/assets/1f875ea4-8ece-4fb6-9c43-1b82bba70755" />  
 
 ## Parte Obligatoria ##  
-1. Opciones de Job
+1. Opciones de Job  
 Añado al fichero Jenkinsfile la directiva options:
 ```
     //definición de opciones para el Job
@@ -28,6 +28,18 @@ Añado al fichero Jenkinsfile la directiva options:
 
     }
 ```
+  
 2. Variables de entorno
+Uso la directiva envaionments. La voy a definir a nivel global de todo el job
+```
+    // definición de variables de entorno FORCE_COLOR y NO_COLOR
+    environment {
+        FORCE_COLOR = 0
+        NO_COLOR = true        
+    }    
+```
+3. 
+    
+
 
   
