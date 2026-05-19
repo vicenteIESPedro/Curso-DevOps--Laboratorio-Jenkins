@@ -50,31 +50,26 @@ pipeline {
                     }
                 }
 
-                //6. Verificación del formato  del codigo definido
-                stage("Format check") {
+                //6. Comprobación de la cálidad del código
+                stage("Code quality") {
                     steps {
-                        sh 'npm run format:check'
+                        sh 'npm run lint'
                     }
                 }
             }
         }
         
 
-        //7. Comprobación de la cálidad del código
-        stage("Code quality") {
-            steps {
-                sh 'npm run lint'
-            }
-        }
+        
 
-        //8. Comprobación de tipos
+        //7. Comprobación de tipos
         stage("Type check") {
             steps {
                 sh 'npm run type-check'
             }
         }
 
-        //9. Ejecución de test
+        //8. Ejecución de test
         stage("Test") {
             steps {
                 sh 'npm run test:coverage'
@@ -87,7 +82,7 @@ pipeline {
             }
         }
 
-        //10. Construcción del proyecto y archivado de un artifact
+        //9. Construcción del proyecto y archivado de un artifact
         stage("Build and Archive") {
             steps {
                 //build del proyecto
@@ -100,7 +95,7 @@ pipeline {
         }
     }
 
-    //11. definición de etapas finales
+    //10. definición de etapas finales
     post{
 
         //siempre se ejecuta
