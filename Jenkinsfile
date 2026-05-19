@@ -41,7 +41,7 @@ pipeline {
         }
 
         //definición de dos etapas que se ejecutan en paralelo
-        stage("Liting"){
+        stage("Linting"){
             parallel {
                 //5. Verificación del formato  del codigo definido
                 stage("Format check") {
@@ -53,7 +53,18 @@ pipeline {
                 //6. Comprobación de la cálidad del código
                 stage("Code quality") {
                     steps {
-                        sh 'npm run lint'
+                        warnError(message: 'No se superaron los chequeos de calidad de código'){
+                                sh 'npm run lint'
+                            }
+                    }
+
+                    post{
+                        failure{
+                             script{
+                                currentBuild.result = "UNSTABLE"
+                                currentBuild.description= 'unstable: formatcheck'
+                            }
+                        }
                     }
                 }
             }
