@@ -249,9 +249,9 @@ Si lo ejecutamos podemos ver como se genera el warning y continua la ejecución.
 <img width="866" height="744" alt="16 -warning" src="https://github.com/user-attachments/assets/5c062d0a-b128-4cf2-ab28-be9bfa4eb2a4" />  
 
 5. Pruebas E2E con docker compose  
-Podemos incluir dentro de un stage un apartado post para realizar operaciones al final.
-Por ejemplo, puede usarse para limpiar servicios.
-Con este codigo, realizamos unos test E2E y ejecutamos una limpieza de los servicios levantados.
+Podemos incluir dentro de un stage un apartado post para realizar operaciones al final.  
+Por ejemplo, puede usarse para limpiar servicios.  
+Con este codigo, realizamos unos test E2E y ejecutamos una limpieza de los servicios levantados.  
 ```
         //ejercicio  6 parte opcional
         stage('E2E test'){
@@ -267,7 +267,9 @@ Con este codigo, realizamos unos test E2E y ejecutamos una limpieza de los servi
             }
         }
 ```
-   
+Al ejecutarla, podemos observar como se levanta el servicio y se baja al final  
+<img width="1331" height="716" alt="17 -post en stage" src="https://github.com/user-attachments/assets/5c5c57c4-25d0-45e8-852d-d001dec13d39" />
+
 
 
 
