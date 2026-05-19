@@ -1,11 +1,140 @@
 pipeline {
     agent any
 
+    //1. definición de opciones para el Job
+    options {
+        //deshabilito las ejecuciones concurrentes
+        disableConcurrentBuilds()
+        
+        //establezco que aparezca impresa fecha/hora en las lineas
+        //ejecutadas
+        timestamps();
+
+        //fijo el tiempo máximo de ejecución del Job en 5 minutos
+        timeout(time: 5, unit: 'MINUTES')
+
+        //mantener las diez ultimas ejecuciones del historial
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+
+    }
+ 
+    // 2. definición de variables de entorno FORCE_COLOR y NO_COLOR
+    environment {
+        FORCE_COLOR = 0
+        NO_COLOR = true  
+        TEST_MODE = "e2e"      
+    }    
+ 
+    //Etapas del pipeline
     stages {
-        stage("prueba") {
+        //3. etapa comprobación herramienta
+        stage("Audit tools") {
             steps {
-                echo "funciona"
+                sh 'node --version'
             }
+        }
+
+        //4. instalación de dependencias del proyecto
+        stage("Install dependencies") {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        //definición de dos etapas que se ejecutan en paralelo
+        stage("Linting"){
+            parallel {
+                //5. Verificación del formato  del codigo definido
+                stage("Format check") {
+                    steps {
+                        sh 'npm run format:check'
+                    }
+                }
+
+                //6. Comprobación de la cálidad del código
+                stage("Code quality") {
+                    steps {
+                        warnError(message: 'No se superaron los chequeos de calidad de código'){
+                                sh 'npm run lint'
+                            }
+                        script{
+                            if (currentBuild.result == 'UNSTABLE') {
+                                currentBuild.description= 'unstable: formatcheck'
+                            }
+                        }    
+                    }
+                }
+            }
+        }
+        
+
+        
+
+        //7. Comprobación de tipos
+        stage("Type check") {
+            steps {
+                sh 'npm run type-check'
+            }
+        }
+
+        //ejercicio  6 parte opcional
+        stage('E2E test'){
+            steps{
+                sh 'docker compose -f compose.e2e.yml run tests'
+            }
+
+            post  {
+                //al final, siempre, limpio el servicio
+                always{
+                    sh 'docker compose -f compose.e2e.yml down -v --remove-orphans || true'
+                }  
+            }
+        }
+
+        //8. Ejecución de test
+        stage("Test") {
+            steps {
+                sh 'npm run test:coverage'
+                publishHTML(reportName: "coverage report",
+                            reportDir: "coverage",
+                            reportFiles: "index.html",
+                            keepAll: true,
+                            alwaysLinkToLastBuild: true,
+                            allowMissing: true)
+            }
+        }
+
+        //9. Construcción del proyecto y archivado de un artifact
+        stage("Build and Archive") {
+            steps {
+                //build del proyecto
+                sh 'npm run build'
+                //creación del archivo zip
+                sh 'zip -r dist.zip dist'
+                //Almacenamiento del archivo creado como artifact
+                archiveArtifacts(artifacts: 'dist.zip', fingerprint: true)
+            }
+        }
+
+    }
+
+    //10. definición de etapas finales
+    post{
+
+        //siempre se ejecuta
+        always{
+            //limpieza del espacio de trabajo
+            cleanWs()
+        }
+
+        //si se ha ejecutado correctamente
+        success{
+            echo 'Pipeline completed successfully!!!'
+        }
+
+        // si se han producido errores
+        failure{
+            echo 'Pipeline failed. Review logs'
         }
     }
  
