@@ -22,7 +22,7 @@ pipeline {
     environment {
         FORCE_COLOR = 0
         NO_COLOR = true  
-        TEST_MODE = "e2e"      
+        //TEST_MODE = "e2e"      
     }    
  
     //Etapas del pipeline
