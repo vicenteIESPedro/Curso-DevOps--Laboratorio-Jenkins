@@ -56,15 +56,11 @@ pipeline {
                         warnError(message: 'No se superaron los chequeos de calidad de código'){
                                 sh 'npm run lint'
                             }
-                    }
-
-                    post{
-                        failure{
-                             script{
-                                currentBuild.result = "UNSTABLE"
+                        script{
+                            if (currentBuild.result == 'UNSTABLE') {
                                 currentBuild.description= 'unstable: formatcheck'
                             }
-                        }
+                        }    
                     }
                 }
             }
