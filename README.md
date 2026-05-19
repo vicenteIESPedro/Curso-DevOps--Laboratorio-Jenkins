@@ -9,8 +9,9 @@ Sobre jenkins creo una tarea que llamo Lab-Jenkins. La he definido como Multibra
 
 Una vez lo creo, busca en el repositorio, localizando el fichero Jenkinsfile y poniendolo disponible en las ramas main y dev-jenkins.  
 La rama dev-jenkins será sobre la que ejecutaré los trabajos.   
-<img width="1333" height="423" alt="03 - Rama main" src="https://github.com/user-attachments/assets/1751a909-f81c-4ff1-8877-6df834209c1b" />  
-  
+<img width="1333" height="423" alt="03 - Rama main" src="https://github.com/user-attachments/assets/1751a909-f81c-4ff1-8877-6df834209c1b" />   
+
+    
 ## Parte Obligatoria ##  
 1. Definición del archivo Jenkinsfile con las directivas, variables de entorno y etapas  
   
@@ -169,7 +170,10 @@ Como resultado, en la página de la rama nos aparece una nueva linea (coverage r
 Al pulsar sobre ella, podemos ver el informe:  
 <img width="1257" height="373" alt="12 - html" src="https://github.com/user-attachments/assets/e46a2b66-7cb5-42df-9297-ae25db257cc0" />  
   
-
+Nota, para generar la sintaxis del comando publishHTML podemos usar un asistente que incorpora Jenkins en Trabajo/Pipeline sintax, pulsando posteriormente en Snipped Generator.  
+<img width="1380" height="563" alt="14 -Generador de funciones" src="https://github.com/user-attachments/assets/5f0652f2-c3dc-41c7-8f66-86ac35f19ce2" />  
+  
+  
 2. Opciones extra del Job.  
 Nos piden mantener en el historial las últimas 10 ejecuciones. Esto se realiza mediante la opción buildDiscarder.  
 Modificamos el fichero jenkinsfile añadiendo esta opción.
@@ -187,10 +191,16 @@ Modificamos el fichero jenkinsfile añadiendo esta opción.
         timeout(time: 5, unit: 'MINUTES')
 
         //mantener las diez ultimas ejecuciones del historial
-        buildDiscarder(logRotator(numToKeepStr: '10'))
+        buildDiscarder logRotator(artifactDaysToKeepStr: '', artifactNumToKeepStr: '', daysToKeepStr: '', numToKeepStr: '10')
+
     }
 ```
- 
+
+Nota: podemos usar el generador de directivas para obtener esta opción con su sintaxis correcta.  
+Opción trabajo/pipeline sintaxis, declarative directive generator.   
+<img width="1464" height="601" alt="13 -Generador de directivas" src="https://github.com/user-attachments/assets/8b8cafd0-8d54-4ea5-8a03-e2c56b4de7e2" />
+
+
 
   
 
