@@ -1,19 +1,19 @@
 # Laboratorio Jenkins: Automatización CI/CD con jenkinsfile #
 
-1. Creación de Tarea en Jenkins y enlace a Repositorio  
-Lo primero ha sido crear el token en GitHub que usaré para conectar con Jenkins.  
+El primer paso es definir una tarea en Jenkins y enlazar la misma a nuestro proyecto de GITHUB.  
+Empezamos por crear el token en GitHub que usaré para conectar con Jenkins.  
 <img width="1169" height="262" alt="01 - Token Github" src="https://github.com/user-attachments/assets/ae64be54-5712-4fe6-b3d7-4e75ad16d180" />
   
-Sobre jenkins he creado una tarea que he llamado Lab-Jenkins. La he definido como Multibranch y la he enlazado al repositorio.
+Sobre jenkins creo una tarea que llamo Lab-Jenkins. La he definido como Multibranch y la he enlazado al repositorio.
 <img width="1167" height="659" alt="02 - Creacion tarea" src="https://github.com/user-attachments/assets/121265c0-9392-4d88-9236-b8072fc76bb0" />  
 
-Una vez lo creo, busca en el repositorio, localizando el fichero Jenkinsfile y poniendo disponible la rama main para realizar ejecuciones.  
-He definido una segunda rama (dev-jenkins) sobre la que trabajaré con Jenkinsfile    
+Una vez lo creo, busca en el repositorio, localizando el fichero Jenkinsfile y poniendolo disponible en las ramas main y dev-jenkins.  
+La rama dev-jenkins será sobre la que ejecutaré los trabajos.   
 <img width="1333" height="423" alt="03 - Rama main" src="https://github.com/user-attachments/assets/1751a909-f81c-4ff1-8877-6df834209c1b" />  
   
 ## Parte Obligatoria ##  
 1. Definición del archivo Jenkinsfile con las directivas, variables de entorno y etapas  
-He definido el siguiente código.
+  
 ```
 pipeline {
     agent any
