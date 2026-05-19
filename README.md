@@ -198,7 +198,38 @@ Modificamos el fichero jenkinsfile añadiendo esta opción.
 
 Nota: podemos usar el generador de directivas para obtener esta opción con su sintaxis correcta.  
 Opción trabajo/pipeline sintaxis, declarative directive generator.   
-<img width="1464" height="601" alt="13 -Generador de directivas" src="https://github.com/user-attachments/assets/8b8cafd0-8d54-4ea5-8a03-e2c56b4de7e2" />
+<img width="1464" height="601" alt="13 -Generador de directivas" src="https://github.com/user-attachments/assets/8b8cafd0-8d54-4ea5-8a03-e2c56b4de7e2" />  
+
+3. Linting en paralelo
+Las etapas se pueden ejecutar en paralelo. En este caso se van a ejecutar las etapas Format Check y Code Quality. Para ello se usa parallel{}
+El código sería:
+```
+        //definición de dos etapas que se ejecutan en paralelo
+        stage("Liting"){
+            parallel {
+                //5. Verificación del formato  del codigo definido
+                stage("Format check") {
+                    steps {
+                        sh 'npm run format:check'
+                    }
+                }
+
+                //6. Comprobación de la cálidad del código
+                stage("Code quality") {
+                    steps {
+                        sh 'npm run lint'
+                    }
+                }
+            }
+        }
+```
+
+Podemos observar como la ejecución se realiza en paralelo.  
+<img width="1261" height="688" alt="15 -ejecucion paralela" src="https://github.com/user-attachments/assets/77de60c4-1690-4000-9c97-677483baa9cb" />  
+
+4. Code quality permisivo.  
+
+
 
 
 
