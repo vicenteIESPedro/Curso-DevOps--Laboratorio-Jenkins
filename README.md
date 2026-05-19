@@ -10,4 +10,9 @@ Sobre jenkins he creado una tarea que he llamado Lab-Jenkins. La he definido com
 Una vez lo creo, busca en el repositorio, localizando el fichero Jenkinsfile y poniendo disponible la rama main para realizar ejecuciones.  
 <img width="1453" height="376" alt="03 - Rama main" src="https://github.com/user-attachments/assets/1f875ea4-8ece-4fb6-9c43-1b82bba70755" />  
 
+## Parte Obligatoria ##  
+1. Opciones de Job
+Añado al fichero Jenkinsfile es siguiente código:
+```
+
   
