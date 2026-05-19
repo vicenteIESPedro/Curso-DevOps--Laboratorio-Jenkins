@@ -227,7 +227,49 @@ El código sería:
 Podemos observar como la ejecución se realiza en paralelo.  
 <img width="1261" height="688" alt="15 -ejecucion paralela" src="https://github.com/user-attachments/assets/77de60c4-1690-4000-9c97-677483baa9cb" />  
 
-4. Code quality permisivo.  
+4. Code quality permisivo.
+Si falla un paso, los siguientes no se ejecutan.
+Para evitar ésto se usa warnError.
+Para probarlo introduzco un cambio en el fichero server.ts y modifico el archivo jenkinsfile con el siguiente código:
+```
+                //6. Comprobación de la cálidad del código
+                stage("Code quality") {
+                    steps {
+                        warnError(message: 'No se superaron los chequeos de calidad de código'){
+                                sh 'npm run lint'
+                            }
+                        script{
+                            if (currentBuild.result == 'UNSTABLE') {
+                                currentBuild.description= 'unstable: formatcheck'
+                            }
+                        }    
+                    }
+```
+Si lo ejecutamos podemos ver como se genera el warning y continua la ejecución.  
+<img width="866" height="744" alt="16 -warning" src="https://github.com/user-attachments/assets/5c062d0a-b128-4cf2-ab28-be9bfa4eb2a4" />  
+
+5. Pruebas E2E con docker compose  
+Podemos incluir dentro de un stage un apartado post para realizar operaciones al final.
+Por ejemplo, puede usarse para limpiar servicios.
+Con este codigo, realizamos unos test E2E y ejecutamos una limpieza de los servicios levantados.
+```
+        //ejercicio  6 parte opcional
+        stage('E2E test'){
+            steps{
+                sh 'docker compose -f compose.e2e.yml run tests'
+            }
+
+            post  {
+                //al final, siempre, limpio el servicio
+                always{
+                    sh 'docker compose -f compose.e2e.yml down -v --remove-orphans || true'
+                }  
+            }
+        }
+```
+   
+
+
 
 
 
