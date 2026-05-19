@@ -21,7 +21,8 @@ pipeline {
     // 2. definición de variables de entorno FORCE_COLOR y NO_COLOR
     environment {
         FORCE_COLOR = 0
-        NO_COLOR = true        
+        NO_COLOR = true  
+        TEST_MODE = "e2e"      
     }    
  
     //Etapas del pipeline
@@ -98,6 +99,20 @@ pipeline {
                 sh 'zip -r dist.zip dist'
                 //Almacenamiento del archivo creado como artifact
                 archiveArtifacts(artifacts: 'dist.zip', fingerprint: true)
+            }
+        }
+
+        //ejercicio  6 parte opcional
+        stage('E2E test'){
+            steps{
+                sh 'docker compose -f compose.e2e.yml run tests'
+            }
+
+            post  {
+                //al final, siempre, limpio el servicio
+                always{
+                    sh 'docker compose -f compose.e2e.yml down -v --remove-orphans || true'
+                }  
             }
         }
     }
