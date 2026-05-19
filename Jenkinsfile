@@ -15,6 +15,10 @@ pipeline {
 
     }
  
+    environment {
+        FORCECOLOR = 0
+        NO_COLOR = true        
+    }    
  
     //Etapas del pipeline
     stages {
