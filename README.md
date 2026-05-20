@@ -253,8 +253,14 @@ Podemos incluir dentro de un stage un apartado post para realizar operaciones al
 Por ejemplo, puede usarse para limpiar servicios.  
 Con este codigo, realizamos unos test E2E y ejecutamos una limpieza de los servicios levantados.  
 ```
-        //ejercicio  6 parte opcional
+        //ejercicio  5 parte opcional
         stage('E2E test'){
+            // defino una variable de entorno necesaria
+            environment{
+                TEST_MODE = "e2e"      
+            }
+
+            //ejecuto los test
             steps{
                 sh 'docker compose -f compose.e2e.yml run tests'
             }
@@ -266,26 +272,10 @@ Con este codigo, realizamos unos test E2E y ejecutamos una limpieza de los servi
                 }  
             }
         }
+
 ```
 Al ejecutarla, podemos observar como se levanta el servicio y se baja al final  
-<img width="1331" height="716" alt="17 -post en stage" src="https://github.com/user-attachments/assets/5c5c57c4-25d0-45e8-852d-d001dec13d39" />
-
-
-
-
-
-
-
-
-  
-
-
-
-
-
-
-  
-
+<img width="1320" height="543" alt="18 -e2e" src="https://github.com/user-attachments/assets/c1d1a31a-44c4-462c-99c3-4cf74c14ae28" />
 
 
 
