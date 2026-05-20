@@ -130,11 +130,17 @@ pipeline {
             environment{
                 APP_VERSION = sh(script: "npm pkg get version | tr -d '\"'",
                                 returnStdout: true).trim()
-                APP_BUILD = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
+                APP_BUILD_VERSION = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
                 DOCKER_HUB_REPO = "vicentett1/cep-devops-backend"
             }
             steps{
-                echo "docker"
+                script{
+                    withDockerRegistry(url:'',credentialsId: 'docker-vic' ){
+                        image=docker.build("${DOCKER_HUB_REPO}")
+                        image.push("latest")
+                        image.push("${APP_BUILD_VERSION}")
+                    }
+                }
             }
 
             when {
