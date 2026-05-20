@@ -161,7 +161,7 @@ pipeline {
                     //estoy en el branch main
                     branch 'main'
                     //el resultado de currentBuil es null o 'SUCCESS'
-                    expression {return !currentBuild.result || currentBuild.result == 'SUCCESS'}
+                    //expression {return currentBuild.result == null || currentBuild.result == 'SUCCESS'}
                 }
             }
         }
