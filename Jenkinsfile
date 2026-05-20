@@ -22,7 +22,6 @@ pipeline {
     environment {
         FORCE_COLOR = 0
         NO_COLOR = true  
-        TEST_MODE = "e2e"      
     }    
  
     //Etapas del pipeline
@@ -79,6 +78,12 @@ pipeline {
 
         //ejercicio  6 parte opcional
         stage('E2E test'){
+            // defino una variable de entorno necesaria
+            environment{
+                TEST_MODE = "e2e"      
+            }
+
+            //ejecuto los test
             steps{
                 sh 'docker compose -f compose.e2e.yml run tests'
             }
