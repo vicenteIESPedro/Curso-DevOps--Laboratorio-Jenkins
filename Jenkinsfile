@@ -140,7 +140,7 @@ pipeline {
             when {
                 allOf {
                     branch 'main'
-                    expression {return currentBuild.result == null || currentBuild.result == 'SUCCESS'}
+                    //expression {return currentBuild.result == null || currentBuild.result == 'SUCCESS'}
                 }
             }
         }
