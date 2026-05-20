@@ -280,11 +280,14 @@ Al ejecutarla, podemos observar como se levanta el servicio y se baja al final
 6. Cosntrucción y publicación de imagen Docker  
 Para publicar una imagen en docker es necesario varios pasos previos:
 * Tener instalado el pluggin Docker Pipeline
+  
 * Tener registradas las credenciales de DockerHub en el Proyecto.  
 Para ello ir a Proyecto/ Credentials. Yo he definido una credencial de tipo usuario/contraseña a la que he puesto como id docker-vic.  
 <img width="931" height="276" alt="19 -credenciales" src="https://github.com/user-attachments/assets/ec4ba384-eef7-4360-861f-36af4ab6fe45" />  
+  
 * Crear en DockerHub el repositorio destino de las imagenes.  
 <img width="628" height="196" alt="20 -dockerhub" src="https://github.com/user-attachments/assets/9b86a034-58c1-4883-bab0-4972c551096f" />  
+
   
 Una vez tengo todos los requisitos, creo mi etapa en el Jenkinsfile:  
 ```
