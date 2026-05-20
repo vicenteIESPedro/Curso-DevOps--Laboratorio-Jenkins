@@ -130,11 +130,11 @@ pipeline {
             environment{
                 APP_VERSION = sh(script: "npm pkg get version | tr -d '\"'",
                                 returnStdout: true).trim()
-                APP_BUILD = env.APP_VERSION + "-" + env.BUILD_NUMBER
+                APP_BUILD = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
                 DOCKER_HUB_REPO = "vicentett1/cep-devops-backend"
             }
             steps{
-
+                echo "docker"
             }
 
             when {
