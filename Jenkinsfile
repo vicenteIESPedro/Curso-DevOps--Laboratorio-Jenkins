@@ -76,7 +76,7 @@ pipeline {
             }
         }
 
-        //ejercicio  6 parte opcional
+        //ejercicio  5 parte opcional
         stage('E2E test'){
             // defino una variable de entorno necesaria
             environment{
