@@ -335,7 +335,7 @@ Una vez tengo todos los requisitos, creo mi etapa en el Jenkinsfile:
 Lo subo al repositorio y lanzo una ejecución en la rama main  
 <img width="1484" height="664" alt="21 -ejecucion publish" src="https://github.com/user-attachments/assets/9c3ae0cf-bc4a-47b1-b852-2f6caba941b4" />  
   
-Como se ve, se ha ejecutado con exito la etapa Publish, pudiendo comprobar en DockerHub que apararecen las imágenes:  
+Como se ve, se ha ejecutado con exito la etapa Publish, pudiendo comprobar en DockerHub que aparecen las imágenes:  
 <img width="814" height="566" alt="22 -dockerhub imagenes" src="https://github.com/user-attachments/assets/05e91733-deaf-4997-bc72-bb798b5dfc7b" />
 
 
