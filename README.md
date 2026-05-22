@@ -275,7 +275,72 @@ Con este codigo, realizamos unos test E2E y ejecutamos una limpieza de los servi
 
 ```
 Al ejecutarla, podemos observar como se levanta el servicio y se baja al final  
-<img width="1320" height="543" alt="18 -e2e" src="https://github.com/user-attachments/assets/c1d1a31a-44c4-462c-99c3-4cf74c14ae28" />
+<img width="1320" height="543" alt="18 -e2e" src="https://github.com/user-attachments/assets/c1d1a31a-44c4-462c-99c3-4cf74c14ae28" />  
+  
+6. Cosntrucción y publicación de imagen Docker  
+Para publicar una imagen en docker es necesario varios pasos previos:
+* Tener instalado el pluggin Docker Pipeline
+  
+* Tener registradas las credenciales de DockerHub en el Proyecto.  
+Para ello ir a Proyecto/ Credentials. Yo he definido una credencial de tipo usuario/contraseña a la que he puesto como id docker-vic.  
+<img width="931" height="276" alt="19 -credenciales" src="https://github.com/user-attachments/assets/ec4ba384-eef7-4360-861f-36af4ab6fe45" />  
+  
+* Crear en DockerHub el repositorio destino de las imagenes.  
+<img width="628" height="196" alt="20 -dockerhub" src="https://github.com/user-attachments/assets/9b86a034-58c1-4883-bab0-4972c551096f" />  
+
+  
+Una vez tengo todos los requisitos, creo mi etapa en el Jenkinsfile:  
+```
+        //ejercicio 5, parte opcional: publicar imagen docker
+        stage("Publish") {
+            //definicion de variables de entorno
+            environment{
+                //Versión 
+                APP_VERSION = sh(script: "npm pkg get version | tr -d '\"'",
+                                returnStdout: true).trim()
+                //versión-numero de build
+                APP_BUILD_VERSION = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
+                //repositorio docker
+                DOCKER_HUB_REPO = "vicentett1/cep-devops-backend"
+            }
+
+            //pasos para la publicacion
+            steps{
+                script{
+                    //usando Dockerregistry con las credenciales definidas en el Job
+                    withDockerRegistry(url:'',credentialsId: 'docker-vic' ){
+                        //creo la imagen asignandole el nombre del repositorio Docker hub
+                        image=docker.build("${DOCKER_HUB_REPO}")
+                        //subo la imagen al repositorio con la etiqueta latest
+                        image.push("latest")
+                        //subo la imagen al repositorio con la etiqueta del numero de versión
+                        image.push("${APP_BUILD_VERSION}")
+                    }
+                }
+            }
+
+            //se ejecuta esta etapa si
+            when {
+                //se cumplen todas las condiciones (and)
+                allOf {
+                    //estoy en el branch main
+                    branch 'main'
+                    //el resultado de currentBuil es null o 'SUCCESS'
+                    //expression {return currentBuild.result == null || currentBuild.result == 'SUCCESS'}
+                }
+            }
+        }
+```
+  
+Lo subo al repositorio y lanzo una ejecución en la rama main  
+<img width="1484" height="664" alt="21 -ejecucion publish" src="https://github.com/user-attachments/assets/9c3ae0cf-bc4a-47b1-b852-2f6caba941b4" />  
+  
+Como se ve, se ha ejecutado con éxito la etapa Publish, pudiendo comprobar en DockerHub que aparecen las imágenes:  
+<img width="814" height="566" alt="22 -dockerhub imagenes" src="https://github.com/user-attachments/assets/05e91733-deaf-4997-bc72-bb798b5dfc7b" />
+
+
+
+
 
 
 

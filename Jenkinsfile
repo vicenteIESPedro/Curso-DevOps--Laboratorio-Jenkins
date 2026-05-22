@@ -53,9 +53,9 @@ pipeline {
                 //6. Verificación del formato  del codigo definido
                 stage("Format check") {
                     steps {
-                        //añadido warnError ya que error esta fase al analizar el archivo
-                        //README.MD
-                        warnError(message: 'Error al chequear README.MD'){
+                        //le he añadido un warnError, por que
+                        //me da error de formato en README.MD
+                        warnError(message: 'No se superaron las comprobaciones de formato'){
                                 sh 'npm run format:check'
                             }
                         
@@ -130,6 +130,46 @@ pipeline {
                 sh 'zip -r dist.zip dist'
                 //Almacenamiento del archivo creado como artifact
                 archiveArtifacts(artifacts: 'dist.zip', fingerprint: true)
+            }
+        }
+
+        //ejercicio 5, parte opcional: publicar imagen docker
+        stage("Publish") {
+            //definicion de variables de entorno
+            environment{
+                //Versión 
+                APP_VERSION = sh(script: "npm pkg get version | tr -d '\"'",
+                                returnStdout: true).trim()
+                //versión-numero de build
+                APP_BUILD_VERSION = "${env.APP_VERSION}-${env.BUILD_NUMBER}"
+                //repositorio docker
+                DOCKER_HUB_REPO = "vicentett1/cep-devops-backend"
+            }
+
+            //pasos para la publicacion
+            steps{
+                script{
+                    //usando Dockerregistry con las credenciales definidas en el Job
+                    withDockerRegistry(url:'',credentialsId: 'docker-vic' ){
+                        //creo la imagen asignandole el nombre del repositorio Docker hub
+                        image=docker.build("${DOCKER_HUB_REPO}")
+                        //subo la imagen al repositorio con la etiqueta latest
+                        image.push("latest")
+                        //subo la imagen al repositorio con la etiqueta del numero de versión
+                        image.push("${APP_BUILD_VERSION}")
+                    }
+                }
+            }
+
+            //se ejecuta esta etapa si
+            when {
+                //se cumplen todas las condiciones (and)
+                allOf {
+                    //estoy en el branch main
+                    branch 'main'
+                    //el resultado de currentBuil es null o 'SUCCESS'
+                    //expression {return currentBuild.result == null || currentBuild.result == 'SUCCESS'}
+                }
             }
         }
 
