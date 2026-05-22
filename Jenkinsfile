@@ -53,6 +53,8 @@ pipeline {
                 //6. Verificación del formato  del codigo definido
                 stage("Format check") {
                     steps {
+                        //añadido warnError ya que error esta fase al analizar el archivo
+                        //README.MD
                         warnError(message: 'Error al chequear README.MD'){
                                 sh 'npm run format:check'
                             }
